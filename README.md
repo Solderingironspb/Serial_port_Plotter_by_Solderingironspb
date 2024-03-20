@@ -1,4 +1,4 @@
-# Serial-port-Plotter
+# Serial port Plotter 1.0 by Solderingironspb (beta)
 Данная программа предназначена для отрисовки графиков, используя данные с микроконтроллера, при отладке приложений.  Для работы требуется связь по UART.
 # Возможности:
 * Выводить графики в реалтайме
@@ -12,11 +12,11 @@
 * Сохранение снимка графика в *.png (в корень программы)
   
 # Начальное окно программы
-![screen1](https://github.com/Solderingironspb/Serial-port-Plotter/assets/68805120/adf60519-0dd5-4dc2-81a0-70f7fb4e4c00)
+![1](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/ca0c38b9-d293-4fde-9a60-cb2922114231)
 # Рисование графиков
-![screen2](https://github.com/Solderingironspb/Serial-port-Plotter/assets/68805120/e3d73bff-021b-4222-9c6b-6d253fb205c6)
+![2](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/6e94ed0b-80ec-4a89-9d14-425fadeb713e)
 # Возможность закрепить график поверх всех окон + сделать безрамочный режим
-![screen3](https://github.com/Solderingironspb/Serial-port-Plotter/assets/68805120/d3071dd2-94b6-493c-aa6e-4c5e0172b97b)
+![3](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/27efaff9-47ac-4498-8170-042d98c3ebff)
  
  ## О Serial port Plotter by Solderingiron:
  Данная программа предназначена для отрисовки графиков, используя данные с микроконтроллера, при отладке приложений.
@@ -30,13 +30,25 @@
  ## А вот передача четырех чисел:
  $3.14159 60 125.625 14.259;
  ## Важно:
- ***
- ``` Нужно данные слать каждый раз в одинаковом количестве. Если начали отправлять, допустим 5 переменных, то и отправляйте по 5 переменных. Ни больше, ни меньше. ```
- ***
+
+ ``` 
+Нужно данные слать каждый раз в одинаковом количестве.
+Если начали отправлять, допустим 5 переменных, то и отправляйте по 5 переменных.
+Ни больше, ни меньше.
+```
+
  ## Для быстрой работы написал библиотеку на Си для микроконтроллеров.
  
- ```В папке с программой есть папка Solderingiron_libs. В ней файлы.```
+ ```
+ В папке с программой есть папка Solderingiron_libs. В ней файлы.
+```
 
-## Скачать программу: https://github.com/Solderingironspb/Serial-port-Plotter/releases/tag/v1.0-beta
+### Скачать программу (win_x64): https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/releases/download/v1.0(beta)/Serial_port_plotter_v1.0_by_Solderingironspb_.beta._win_x64.zip
 
- ### P.S. Основа программы была позаимствована у Borislav: https://github.com/CieNTi/serial_port_plotter
+```
+P.S. соверую использовать USB-TTL конвертер на чипе CH340.
+При тестах он показал себя стабильней, чем тот же USB CDC в ST-Link v2.1.
+Тот порядком сбоил при подключениях программы, или же, если на исследуемой плате нажать ресет.
+```
+
+ 
