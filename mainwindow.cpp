@@ -714,6 +714,7 @@ void MainWindow::on_checkBox_clicked(bool checked){
 
 /*CheckBox Бегущий график*/
 void MainWindow::on_checkBox_2_clicked(bool checked){
+    ui->action_run->setChecked(checked);
     flag_Graph_moove= checked;
     if (flag_Graph_moove){
         ui->plot->setInteraction (QCP::iRangeDrag, false);
