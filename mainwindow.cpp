@@ -1,6 +1,5 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
-#include <x86intrin.h>
 #include <stdbool.h>
 
 bool flag_Autoscale = false;
@@ -127,6 +126,9 @@ void MainWindow::createUI(){
     /*Автоматически определять количество каналов*/
     ui->automatic_cnt_channel->setChecked(true);
     on_automatic_cnt_channel_clicked(true);
+    /*Включение аппаратного ускорения по-умолчанию*/
+    ui->action_use_OpenGL->setChecked(true);
+    on_action_use_OpenGL_triggered(true);
 }
 
 
@@ -255,7 +257,7 @@ void MainWindow::portOpenedSuccess(){
     }
     /*Заблокируем кнопку выключения записи, пока не отключимся от COM порта*/
     ui->actionRecord_stream->setEnabled(false);
-    updateTimer.start (16);//Запустим таймер на обновление графика. По идее должно быть 60 FPS
+    updateTimer.start (20);//Запустим таймер на обновление графика. По идее должно быть 50 FPS
     connected = true;
     plotting = true;
     ui->pushButton->setEnabled(false); //При удачном подключении кнопку обновления списка доступных COM портов сделаем неактивной
@@ -454,10 +456,10 @@ void MainWindow::scale_setting(){
 
 /*Окно помощь -> о программе*/
 void MainWindow::on_actionHow_to_use_triggered(){
-    helpWindow = new HelpWindow (this);
-    helpWindow->setWindowTitle ("О программе");
-    helpWindow->setWindowFlags(Qt::Dialog| Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint); //Кнопки на окне(Свернуть, большое окно и закрыть.)
-    helpWindow->show();
+    about = new About (this);
+    about->setWindowTitle ("О программе");
+    about->setWindowFlags(Qt::Dialog| Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint); //Кнопки на окне(Свернуть, большое окно и закрыть.)
+    about->show();
 }
 
 
@@ -666,7 +668,7 @@ void MainWindow::on_pushButton_clicked(){
         enable_com_controls (true);
         ui->savePNGButton->setEnabled (true);
     }
-    for (QSerialPortInfo port : QSerialPortInfo::availablePorts()){
+    Q_FOREACH(QSerialPortInfo port, QSerialPortInfo::availablePorts()){
         ui->comboPort->addItem (port.portName());
     }
 }
@@ -685,6 +687,7 @@ void MainWindow::on_Autoscale_triggered(){
 
     if (!updateTimer.isActive()){
         replot();
+
     }
 }
 
@@ -825,4 +828,9 @@ void MainWindow::on_action_Frameless_window_hint_triggered(bool checked){
 }
 
 
+
+/*Использование аппаратного ускорения*/
+void MainWindow::on_action_use_OpenGL_triggered(bool checked){
+    ui->plot->setOpenGl(checked, 3);
+}
 

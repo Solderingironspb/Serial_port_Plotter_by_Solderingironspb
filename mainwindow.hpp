@@ -1,45 +1,17 @@
-/***************************************************************************
-**  This file is part of Serial Port Plotter                              **
-**                                                                        **
-**                                                                        **
-**  Serial Port Plotter is a program for plotting integer data from       **
-**  serial port using Qt and QCustomPlot                                  **
-**                                                                        **
-**  This program is free software: you can redistribute it and/or modify  **
-**  it under the terms of the GNU General Public License as published by  **
-**  the Free Software Foundation, either version 3 of the License, or     **
-**  (at your option) any later version.                                   **
-**                                                                        **
-**  This program is distributed in the hope that it will be useful,       **
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of        **
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         **
-**  GNU General Public License for more details.                          **
-**                                                                        **
-**  You should have received a copy of the GNU General Public License     **
-**  along with this program.  If not, see http://www.gnu.org/licenses/.   **
-**                                                                        **
-****************************************************************************
-**           Author: Borislav                                             **
-**           Contact: b.kereziev@gmail.com                                **
-**           Date: 29.12.14                                               **
-****************************************************************************/
-
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
 #include <QtSerialPort/QtSerialPort>
 #include <QSerialPortInfo>
-#include "helpwindow.hpp"
+#include "about.h"
 #include "qcustomplot/qcustomplot.h"
 
 #define START_MSG       '$'
 #define END_MSG         ';'
-
 #define WAIT_START      1
 #define IN_MESSAGE      2
 #define UNDEFINED       3
-
 #define CUSTOM_LINE_COLORS   14
 #define GCP_CUSTOM_LINE_COLORS 4
 
@@ -100,6 +72,7 @@ private slots:
     void on_action_windows_stays_on_top_triggered(bool checked);
     void on_action_Frameless_window_hint_triggered(bool checked);
     void on_action_run_triggered(bool checked);
+    void on_action_use_OpenGL_triggered(bool checked);
 
 signals:
     void portOpenFail();
@@ -130,7 +103,7 @@ private:
     QSerialPort *serialPort;
     QString receivedData;
     int STATE;
-    HelpWindow *helpWindow;
+    About *about;
 
     void createUI();
     void enable_com_controls (bool enable);

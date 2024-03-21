@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>About</class>
+ <widget class="QWidget" name="About">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>684</width>
+    <height>507</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2024 Волков Олег&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Лицензия: GNU GENERAL PUBLIC LICENSE&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;e-mail: &lt;a href=&quot;mailto:solderingiron.notification@yandex.ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;solderingiron.notification@yandex.ru&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Git: &lt;a href=&quot;https://github.com/Solderingironspb/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Solderingironspb/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Проект: &lt;a href=&quot;https://github.com/Solderingironspb/Serial-port-Plotter&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/Solderingironspb/Serial-port-Plotter&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Библиотека на языке си для микроконтроллеров (для быстрой работы с данной программой) находится в папке Solderingiron_libs.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Основа программы позаимствована у Borislav: &lt;a href=&quot;https://github.com/CieNTi/serial_port_plotter&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/CieNTi/serial_port_plotter&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Данная программа предназначена для отрисовки графиков, используя данные с микроконтроллера, при отладке приложений.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Для работы требуется связь по UART.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;С микроконтроллера должны лететь char массивы с числовыми данными.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Начало сообщения начинается с символа '$', далее идет число в обычном формате, &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;например '3.14159'. Разделяются числа пробелом. Заканчивается посылка символом ';'&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Чтоб было совсем понятно - вот пример передачи с микроконтроллера одного числа для отладки:&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;$3.14159;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;А вот передача четырех чисел:&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;$3.14159 60 125.625 14.259;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;br/&gt;P.S. соверую использовать USB-TTL конвертер на чипе CH340.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;При тестах он показал себя стабильней, чем тот же USB CDC в ST-Link v2.1.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Тот порядком сбоил при подключениях программы, или же, если на исследуемой плате нажать ресет. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

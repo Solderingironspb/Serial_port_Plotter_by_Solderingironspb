@@ -16,12 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Serial port Plotter 1.0 by Solderingironspb (beta)</string>
   </property>
@@ -879,6 +873,7 @@ QGroupBox {
     <addaction name="Autoscale"/>
     <addaction name="action_run"/>
     <addaction name="action_visible_legend"/>
+    <addaction name="action_use_OpenGL"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -1209,6 +1204,14 @@ QGroupBox {
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="action_use_OpenGL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Аппаратное ускорение</string>
    </property>
   </action>
  </widget>
