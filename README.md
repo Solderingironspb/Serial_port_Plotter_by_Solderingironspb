@@ -1,22 +1,24 @@
-# Serial port Plotter 1.0 by Solderingironspb (beta)
+# Serial port Plotter 1.0 by Solderingironspb
 Данная программа предназначена для отрисовки графиков, используя данные с микроконтроллера, при отладке приложений.  Для работы требуется связь по UART.
 # Возможности:
 * Выводить графики в реалтайме
-* Автоматическое определение количества каналов (Не всегда корректно, особенно, если мк ресетнуть во время вывода данных)
 * Ручное и автоматическое масштабирование
+* Выбор: бегущий график или статическая картинка
 * Вывод отладочной информации (данные по каналам)
 * Возможность скрывать ненужные элементы программы
 * Возможность делать программу поверх всех окон
 * Возможность убрать рамку программы
 * Сохранение данных в *.csv файл (в корень программы)
 * Сохранение снимка графика в *.png (в корень программы)
+* Поддержка OpenGL(В зависимости от железа. На очень старых видеокартах может не работать)
+* Программа сохраняет настройки окон, расположение окон и настройки подключения к COM порту
   
 # Начальное окно программы
-![1](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/ca0c38b9-d293-4fde-9a60-cb2922114231)
+![1](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/2110a826-41a1-4e22-99d8-be3e1d777a66)
 # Рисование графиков
-![2](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/6e94ed0b-80ec-4a89-9d14-425fadeb713e)
+![2](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/4238d7bf-d9b3-4c0e-974c-3ee5c105e8ad)
 # Возможность закрепить график поверх всех окон + сделать безрамочный режим
-![3](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/27efaff9-47ac-4498-8170-042d98c3ebff)
+![3](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/assets/68805120/ab41f0ed-7f1d-437f-89a3-272332c13f8e)
  
  ## О Serial port Plotter by Solderingiron:
  Данная программа предназначена для отрисовки графиков, используя данные с микроконтроллера, при отладке приложений.
@@ -42,13 +44,14 @@
  ```
  В папке с программой есть папка Solderingiron_libs. В ней файлы.
 ```
-
-### Скачать программу (win_x64): https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/releases/download/v1.0(beta)/Serial_port_plotter_v1.0_by_Solderingironspb_.beta._win_x64.zip
-
 ```
 P.S. соверую использовать USB-TTL конвертер на чипе CH340.
 При тестах он показал себя стабильней, чем тот же USB CDC в ST-Link v2.1.
 Тот порядком сбоил при подключениях программы, или же, если на исследуемой плате нажать ресет.
 ```
+
+### [Скачать программу (win_x64)](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/releases/download/v1.0/Serial_port_Plotter_v1.0_win_x64.zip)
+
+
 
  
