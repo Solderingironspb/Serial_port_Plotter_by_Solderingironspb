@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Serial port Plotter 1.0 by Solderingironspb (beta)</string>
+   <string>Serial port Plotter 1.0 by Solderingironspb</string>
   </property>
   <property name="windowIcon">
    <iconset theme="://icons/Plotter.ico">
@@ -509,10 +509,13 @@ QGroupBox {
                 </size>
                </property>
                <property name="maximum">
-                <number>3000</number>
+                <number>65535</number>
+               </property>
+               <property name="stepType">
+                <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
                </property>
                <property name="value">
-                <number>500</number>
+                <number>65535</number>
                </property>
               </widget>
              </item>
@@ -820,6 +823,12 @@ QGroupBox {
           <height>0</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>150</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">QTextEdit{
 
@@ -899,136 +908,6 @@ QGroupBox {
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
   </widget>
-  <action name="actionConnect2">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/serial_port_plotter/play_nor.png</normaloff>
-     <normalon>:/serial_port_plotter/play_nor.png</normalon>
-     <disabledoff>:/serial_port_plotter/play_dis.png</disabledoff>
-     <disabledon>:/serial_port_plotter/play_dis.png</disabledon>
-     <activeoff>:/serial_port_plotter/play_act.png</activeoff>
-     <activeon>:/serial_port_plotter/play_act.png</activeon>
-     <selectedoff>:/serial_port_plotter/play_act.png</selectedoff>
-     <selectedon>:/serial_port_plotter/play_act.png</selectedon>:/serial_port_plotter/play_nor.png</iconset>
-   </property>
-   <property name="text">
-    <string>Connect</string>
-   </property>
-   <property name="toolTip">
-    <string>Connect to COM port</string>
-   </property>
-  </action>
-  <action name="actionPause_Plot2">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/serial_port_plotter/pause_nor.png</normaloff>
-     <normalon>:/serial_port_plotter/pause_nor.png</normalon>
-     <disabledoff>:/serial_port_plotter/pause_dis.png</disabledoff>
-     <disabledon>:/serial_port_plotter/pause_dis.png</disabledon>
-     <activeoff>:/serial_port_plotter/pause_act.png</activeoff>
-     <activeon>:/serial_port_plotter/pause_act.png</activeon>
-     <selectedoff>:/serial_port_plotter/pause_act.png</selectedoff>
-     <selectedon>:/serial_port_plotter/pause_act.png</selectedon>:/serial_port_plotter/pause_nor.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pause</string>
-   </property>
-   <property name="toolTip">
-    <string>Pause plot</string>
-   </property>
-  </action>
-  <action name="actionDisconnect2">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/serial_port_plotter/stop_nor.png</normaloff>
-     <normalon>:/serial_port_plotter/stop_nor.png</normalon>
-     <disabledoff>:/serial_port_plotter/stop_dis.png</disabledoff>
-     <disabledon>:/serial_port_plotter/stop_dis.png</disabledon>
-     <activeoff>:/serial_port_plotter/stop_act.png</activeoff>
-     <activeon>:/serial_port_plotter/stop_act.png</activeon>
-     <selectedoff>:/serial_port_plotter/stop_act.png</selectedoff>
-     <selectedon>:/serial_port_plotter/stop_act.png</selectedon>:/serial_port_plotter/stop_nor.png</iconset>
-   </property>
-   <property name="text">
-    <string>Disconnect</string>
-   </property>
-   <property name="toolTip">
-    <string>Disconnect COM port</string>
-   </property>
-  </action>
-  <action name="actionClear2">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/serial_port_plotter/clear_nor.png</normaloff>
-     <normalon>:/serial_port_plotter/clear_nor.png</normalon>
-     <disabledoff>:/serial_port_plotter/clear_dis.png</disabledoff>
-     <disabledon>:/serial_port_plotter/clear_dis.png</disabledon>
-     <activeoff>:/serial_port_plotter/clear_act.png</activeoff>
-     <activeon>:/serial_port_plotter/clear_act.png</activeon>
-     <selectedoff>:/serial_port_plotter/clear_act.png</selectedoff>
-     <selectedon>:/serial_port_plotter/clear_act.png</selectedon>:/serial_port_plotter/clear_nor.png</iconset>
-   </property>
-   <property name="text">
-    <string>Clear</string>
-   </property>
-   <property name="toolTip">
-    <string>Clear plot data</string>
-   </property>
-  </action>
-  <action name="actionHow_to_use2">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/serial_port_plotter/help_nor.png</normaloff>
-     <normalon>:/serial_port_plotter/help_nor.png</normalon>
-     <disabledoff>:/serial_port_plotter/help_dis.png</disabledoff>
-     <disabledon>:/serial_port_plotter/help_dis.png</disabledon>
-     <activeoff>:/serial_port_plotter/help_act.png</activeoff>
-     <activeon>:/serial_port_plotter/help_act.png</activeon>
-     <selectedoff>:/serial_port_plotter/help_act.png</selectedoff>
-     <selectedon>:/serial_port_plotter/help_act.png</selectedon>:/serial_port_plotter/help_nor.png</iconset>
-   </property>
-   <property name="text">
-    <string>How to use</string>
-   </property>
-  </action>
-  <action name="actionRecord_stream2">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/line_icon_set/document.png</normaloff>
-     <normalon>:/icons/line_icon_set_text/document.png</normalon>
-     <disabledoff>:/icons/line_icon_set/document.png</disabledoff>:/icons/line_icon_set/document.png</iconset>
-   </property>
-   <property name="text">
-    <string>Record stream</string>
-   </property>
-   <property name="toolTip">
-    <string>Record the incoming data to a .csv file ( shortcut : s )</string>
-   </property>
-   <property name="shortcut">
-    <string/>
-   </property>
-   <property name="visible">
-    <bool>true</bool>
-   </property>
-  </action>
   <action name="actionConnect">
    <property name="text">
     <string>Подключиться</string>

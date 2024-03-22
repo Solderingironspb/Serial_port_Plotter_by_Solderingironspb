@@ -9,37 +9,14 @@ uint32_t x_scale_value = 500;
 uint32_t Data_count = 0; //Количество графиков
 uint64_t Horizontal_scroll_value = 0;
 bool flag_only_graph = false;
+uint32_t Width_pen_graph = 1;//Ширина линии графика
+QString ComPortName;
+bool Debug_visible = false;
 
 
 MainWindow::MainWindow (QWidget *parent) :
     QMainWindow (parent),
     ui (new Ui::MainWindow),
-
-    line_colors{
-        QColor (205,34,46,255), //красный
-        QColor (19,84,208,255), //Синий
-        QColor (0,144,144,255), //зеленый
-        QColor (213,193,90,255), //золотой
-        QColor (218,166,168,255), //розовый
-        QColor (176,0,13,255), //красный насыщенней
-        QColor (159,109,25), //коричневый
-        QColor (173,173,173), //серый
-        QColor (73,146,184,255), //голубой
-        QColor (35,195,193,255), //голубо-зеленый
-        QColor (245,181,52,255), //оранжевый
-        QColor (223,99,68,255), //недокрасный
-        QColor (255,141,59,255), //морковный
-        QColor (0,77,119,255), //темносиний
-        },
-
-    gui_colors {
-        QColor (249, 249,  249,  255), //Задний фон графика
-        QColor (170,  170,  170,  200), //Grid color
-        QColor (30, 30, 30, 255), //Цвет текста графика
-        QColor (245,  245,  245,  240)  //Цвет задника у легенды
-        },
-
-
     connected (false),
     plotting (false),
     dataPointNumber (0),
@@ -48,8 +25,9 @@ MainWindow::MainWindow (QWidget *parent) :
     STATE (WAIT_START)
 {
     ui->setupUi (this);
-    createUI();
-    setupPlot();
+    settings = new QSettings("settings.ini", QSettings::IniFormat, this);
+    createUI();//Настройка окна
+    setupPlot();//Настройка графика
     connect (ui->plot, SIGNAL (mouseMove (QMouseEvent*)), this, SLOT (onMouseMoveInPlot (QMouseEvent*)));
     connect (ui->plot, SIGNAL(selectionChangedByUser()), this, SLOT(channel_selection()));
     connect (ui->plot, SIGNAL(legendDoubleClick (QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*)), this, SLOT(legend_double_click (QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*)));
@@ -62,7 +40,83 @@ MainWindow::~MainWindow(){
     if (serialPort != nullptr){
         delete serialPort;
     }
+    write_settings();//Перед закрытием окна сохраним настройки
     delete ui;
+}
+
+/*Функция сохранения настроек приложения*/
+void MainWindow::write_settings(){
+    settings->setValue("OpenGL", ui->action_use_OpenGL->isChecked());
+    settings->setValue("WidthPen", Width_pen_graph);
+    settings->setValue("Baudrate", ui->comboBaud->currentIndex());
+    settings->setValue("Databits", ui->comboData->currentIndex());
+    settings->setValue("Partity", ui->comboStop->currentIndex());
+    settings->setValue("ComPort", ui->comboPort->currentText());
+    settings->setValue("WinComPort", ui->action_COM_port->isChecked());
+    settings->setValue("WinInputData", ui->action_input_data->isChecked());
+    settings->setValue("WinGraphSettings", ui->action_graph_settings->isChecked());
+    settings->setValue("WinDebugInfo", ui->action_debug_info->isChecked());
+    //qDebug() << Debug_visible;
+    settings->setValue("WinDebugInfoHide", Debug_visible);
+    settings->setValue("WinOnTop", ui->action_windows_stays_on_top->isChecked());
+    settings->setValue("Geometry", geometry());
+    settings->setValue("Autoscale", ui->Autoscale->isChecked());
+    settings->setValue("RunGraph", ui->action_run->isChecked());
+    settings->setValue("X_set", ui->spinBox->value());
+    settings->setValue("Y_set", ui->spinYStep->value());
+    settings->setValue("Autoscan_channels", ui->automatic_cnt_channel->isChecked());
+    settings->setValue("Count_channels", ui->channel_count->value());
+    settings->setValue("Legend", ui->action_visible_legend->isChecked());
+}
+
+/*Функция чтения настроек приложения*/
+void MainWindow::read_settings(){
+    Width_pen_graph = settings->value("WidthPen", "2").toUInt();
+    /*Включить/выключить аппаратное ускорение*/
+    apply_setttings_OpenGL(settings->value("OpenGL", "false").toBool());
+    /*Выберем 9600 по-умолчанию*/
+    ui->comboBaud->setCurrentIndex (settings->value("Baudrate", "3").toInt());
+    ui->comboData->setCurrentIndex(settings->value("Databits", "0").toInt());
+    ui->comboParity->setCurrentIndex(settings->value("Partity", "0").toInt());
+    ComPortName = settings->value("ComPort", "").toString();
+    /*Отображение окон по умолчанию*/
+    Window_init(settings->value("WinComPort", "true").toBool(),
+                settings->value("WinInputData", "false").toBool(),
+                settings->value("WinGraphSettings", "true").toBool(),
+                settings->value("WinDebugInfo", "true").toBool());
+    /*if ((settings->value("WinDebugInfoHide", "true").toBool()) != ui->textEdit_UartWindow->isVisible()){
+        on_pushButton_TextEditHide_clicked();
+    }*/
+    ui->action_windows_stays_on_top->setChecked(settings->value("WinOnTop", "false").toBool());
+    on_action_windows_stays_on_top_triggered(settings->value("WinOnTop", "false").toBool());
+    setGeometry(settings->value("Geometry", QRect(200,200,300,300)).toRect());
+    /*Автомастшабирование*/
+    ui->checkBox->setChecked(settings->value("Autoscale", "true").toBool());
+    ui->Autoscale->setChecked(settings->value("Autoscale", "true").toBool());
+    on_Autoscale_triggered();
+    /*Бегущий график*/
+    ui->action_run->setChecked(settings->value("RunGraph", "true").toBool());
+    ui->checkBox_2->setChecked(settings->value("RunGraph", "true").toBool());
+    on_checkBox_2_clicked(settings->value("RunGraph", "true").toBool());
+    /*Делений по Y выставим*/
+    ui->spinYStep->setValue(settings->value("Y_set", "5").toUInt());
+    on_spinYStep_valueChanged(settings->value("Y_set", "5").toUInt());
+    /*Делений по X выставим*/
+    ui->spinBox->setValue(settings->value("X_set", "500").toUInt());
+    on_spinBox_valueChanged(settings->value("X_set", "500").toUInt());
+    /*Автоматически определять количество каналов*/
+    ui->automatic_cnt_channel->setChecked(settings->value("Autoscan_channels", "true").toBool());
+    on_automatic_cnt_channel_clicked(settings->value("Autoscan_channels", "true").toBool());
+    /*Количество каналов*/
+    ui->channel_count->setValue(settings->value("Count_channels", "1").toUInt());
+
+
+}
+
+/*Функция инициализации (Вкл/выкл Аппаратное ускорение)*/
+void MainWindow::apply_setttings_OpenGL(bool arg1){
+    ui->action_use_OpenGL->setChecked(arg1);
+    on_action_use_OpenGL_triggered(arg1);
 }
 
 
@@ -108,27 +162,16 @@ void MainWindow::createUI(){
     ui->comboStop->addItem ("2 bits");
     ui->listWidget_Channels->clear();
     /*Определим настройки по-умолчанию*/
-    /*Выберем 9600 по-умолчанию*/
-    ui->comboBaud->setCurrentIndex (3);
-    /*Автомастшабирование*/
-    ui->checkBox->setChecked(1);
-    ui->Autoscale->setChecked(1);
-    on_Autoscale_triggered();
-    /*Бегущий график*/
-    ui->action_run->setChecked(1);
-    ui->checkBox_2->setChecked(1);
-    on_checkBox_2_clicked(1);
-    /*Делений по Y выставим*/
-    ui->spinYStep->setValue(5);
-    on_spinYStep_valueChanged(5);
-    /*Отображение окон по умолчанию*/
-    Window_init(1,1,1,1);
-    /*Автоматически определять количество каналов*/
-    ui->automatic_cnt_channel->setChecked(true);
-    on_automatic_cnt_channel_clicked(true);
-    /*Включение аппаратного ускорения по-умолчанию*/
-    ui->action_use_OpenGL->setChecked(true);
-    on_action_use_OpenGL_triggered(true);
+
+    read_settings();
+
+    uint32_t Index = ui->comboPort->count();
+    for (uint32_t i = 0; i < Index; i++){
+        if (ui->comboPort->itemText(i) == ComPortName){
+            ui->comboPort->setCurrentIndex(i);
+            //qDebug() << "Выбран порт: " << ui->comboPort->itemText(i);
+        }
+    }
 }
 
 
@@ -144,9 +187,10 @@ void MainWindow::setupPlot(){
     ui->plot->legend->setFont (font);
 
     /*Настройка оси X*/
-    ui->plot->xAxis->grid()->setPen (QPen(gui_colors[2], 1, Qt::DotLine));
+    ui->plot->xAxis->grid()->setZeroLinePen(QPen(gui_colors[1], 1, Qt::DotLine));
+    ui->plot->xAxis->grid()->setPen (QPen(gui_colors[1], 1, Qt::DotLine));
     ui->plot->xAxis->grid()->setSubGridPen (QPen(gui_colors[1], 1, Qt::DotLine));
-    ui->plot->xAxis->grid()->setSubGridVisible (true);
+    //ui->plot->xAxis->grid()->setSubGridVisible (true);
     ui->plot->xAxis->setBasePen (QPen (gui_colors[2]));
     ui->plot->xAxis->setTickPen (QPen (gui_colors[2]));
     ui->plot->xAxis->setSubTickPen (QPen (gui_colors[2]));
@@ -156,9 +200,10 @@ void MainWindow::setupPlot(){
     scale_setting();
 
     /*Настройка оси Y*/
-    ui->plot->yAxis->grid()->setPen (QPen(gui_colors[2], 1, Qt::DotLine));
+    ui->plot->yAxis->grid()->setZeroLinePen(QPen(gui_colors[1], 1, Qt::DotLine));
+    ui->plot->yAxis->grid()->setPen (QPen(gui_colors[1], 1, Qt::DotLine));
     ui->plot->yAxis->grid()->setSubGridPen (QPen(gui_colors[1], 1, Qt::DotLine));
-    ui->plot->yAxis->grid()->setSubGridVisible (true);
+    //ui->plot->yAxis->grid()->setSubGridVisible (true);
     ui->plot->yAxis->setBasePen (QPen (gui_colors[2]));
     ui->plot->yAxis->setTickPen (QPen (gui_colors[2]));
     ui->plot->yAxis->setSubTickPen (QPen (gui_colors[2]));
@@ -169,7 +214,7 @@ void MainWindow::setupPlot(){
     /* Легенда */
     QFont legendFont;
     legendFont.setPointSize (8); //Размер
-    ui->plot->legend->setVisible (true);
+    //ui->plot->legend->setVisible (true);
     ui->plot->legend->setFont (legendFont);
     ui->plot->legend->setBrush (gui_colors[3]); //Цвет задника
     ui->plot->legend->setBorderPen (gui_colors[1]);//Цвет рамки
@@ -177,6 +222,10 @@ void MainWindow::setupPlot(){
 
     ui->action_visible_legend->setChecked(true);
     on_action_visible_legend_triggered(true);
+    /*Показать/скрыть легенду*/
+    ui->action_visible_legend->setChecked(settings->value("Legend", "true").toBool());
+    on_action_visible_legend_triggered(settings->value("Legend", "true").toBool());
+
 }
 
 
@@ -246,7 +295,7 @@ void MainWindow::portOpenedSuccess(){
     /*Скроем настройка COM порта*/
     ui->action_COM_port->setChecked(false);
     on_action_COM_port_triggered(false);
-    setupPlot();
+    //setupPlot();
     ui->statusBar->showMessage ("Подключено!");
     enable_com_controls (false);
     
@@ -284,7 +333,7 @@ void MainWindow::replot(){
 }
 
 
-/*Функция по составлению графика из полученных данных. Честно спизженная у Borislav https://github.com/CieNTi/serial_port_plotter */
+/*Функция по составлению графика из полученных данных. Основа парсинга позаимствована у Borislav: https://github.com/CieNTi/serial_port_plotter*/
 /*Я нихрена не понял, чего он так замудрил, ну да ладно...C CH340 работает хорошо. С CDC от ST link v2.1 работает со сбоями*/
 void MainWindow::onNewDataArrived(QStringList newData){
     static int data_members = 0;
@@ -315,7 +364,7 @@ void MainWindow::onNewDataArrived(QStringList newData){
                     /* Add new channel data */ //Добавлен стиль линии на более жирный
                     ui->plot->addGraph();
                     QPen GraphY1;
-                    GraphY1.setWidth(2);
+                    GraphY1.setWidth(Width_pen_graph); //Ширина линии
                     GraphY1.setColor(line_colors[channels % CUSTOM_LINE_COLORS]);
                     ui->plot->graph()->setPen (GraphY1);
                     ui->plot->graph()->setName (QString("Канал данных %1").arg(channels));
@@ -343,6 +392,7 @@ void MainWindow::onNewDataArrived(QStringList newData){
 
 
 /*Обработка приходящих данных*/
+/*Основа парсинга позаимствована у Borislav: https://github.com/CieNTi/serial_port_plotter*/
 void MainWindow::readData(){
     if(serialPort->bytesAvailable()) {                                                    // If any bytes are available
         QByteArray data = serialPort->readAll();                                          // Read all data in QByteArray
@@ -365,7 +415,7 @@ void MainWindow::readData(){
                         if(filterDisplayedData){
                             ui->textEdit_UartWindow->clear();
                             for(int i = 0; i<incomingData.size(); i++){
-                                ui->textEdit_UartWindow->append("Канал "+ QString::number(i,10) + ": " + incomingData[i]);
+                                ui->textEdit_UartWindow->append("Канал данных "+ QString::number(i,10) + ": " + incomingData[i]);
                             }
                         }
                         emit newData(incomingData);
@@ -572,7 +622,7 @@ void MainWindow::on_actionClear_triggered(){
     ui->listWidget_Channels->clear();
     channels = 0;
     dataPointNumber = 0;
-    emit setupPlot();
+    //emit setupPlot();
     ui->plot->replot();
 }
 
@@ -615,13 +665,15 @@ void MainWindow::saveStream(QStringList newData){
     }
 }
 
-/*Кнопка показать/скрыть информацию*/
+/*Нажать на кнопку показать/скрыть информацию*/
 void MainWindow::on_pushButton_TextEditHide_clicked(){
     if(ui->pushButton_TextEditHide->isChecked()){
         ui->textEdit_UartWindow->setVisible(false);
+        Debug_visible = false;
         ui->pushButton_TextEditHide->setText("Показать информацию");
     }else{
         ui->textEdit_UartWindow->setVisible(true);
+        Debug_visible = true;
         ui->pushButton_TextEditHide->setText("Скрыть информацию");
     }
 }
@@ -804,6 +856,9 @@ void MainWindow::on_action_hide_debug_info_triggered(){
 /*Показывать/скрыть легенду с графика. Сочетание Crtl+Shift+L*/
 void MainWindow::on_action_visible_legend_triggered(bool checked){
     ui->plot->legend->setVisible(checked);
+    if (!updateTimer.isActive()){
+        replot();
+    }
 }
 
 /*Вид->Закрепить поверх всех окон*/
@@ -833,5 +888,10 @@ void MainWindow::on_action_Frameless_window_hint_triggered(bool checked){
 /*Использование аппаратного ускорения*/
 void MainWindow::on_action_use_OpenGL_triggered(bool checked){
     ui->plot->setOpenGl(checked, 3);
+    if (ui->plot->openGl()){
+        ui->statusBar->showMessage ("OpenGL включен");
+    }else{
+        ui->statusBar->showMessage ("OpenGL выключен");
+    }
 }
 

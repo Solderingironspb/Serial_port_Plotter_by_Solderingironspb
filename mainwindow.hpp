@@ -6,6 +6,7 @@
 #include <QSerialPortInfo>
 #include "about.h"
 #include "qcustomplot/qcustomplot.h"
+#include <QSettings>
 
 #define START_MSG       '$'
 #define END_MSG         ';'
@@ -16,7 +17,7 @@
 #define GCP_CUSTOM_LINE_COLORS 4
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -26,8 +27,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void write_settings();
+    void read_settings();
 
 private slots:
+    void apply_setttings_OpenGL(bool arg1);
     void on_comboPort_currentIndexChanged(const QString &arg1);
     void portOpenedSuccess();
     void portOpenedFail();
@@ -82,9 +86,30 @@ signals:
 
 private:
     Ui::MainWindow *ui;
+    QSettings *settings;
 
-    QColor line_colors[CUSTOM_LINE_COLORS];
-    QColor gui_colors[GCP_CUSTOM_LINE_COLORS];
+    QColor line_colors[CUSTOM_LINE_COLORS] = {
+        QColor (205,34,46,255), //красный
+        QColor (19,84,208,255), //Синий
+        QColor (0,144,144,255), //зеленый
+        QColor (213,193,90,255), //золотой
+        QColor (218,166,168,255), //розовый
+        QColor (176,0,13,255), //красный насыщенней
+        QColor (159,109,25), //коричневый
+        QColor (173,173,173), //серый
+        QColor (73,146,184,255), //голубой
+        QColor (35,195,193,255), //голубо-зеленый
+        QColor (245,181,52,255), //оранжевый
+        QColor (223,99,68,255), //недокрасный
+        QColor (255,141,59,255), //морковный
+        QColor (0,77,119,255), //темносиний;
+    };
+    QColor gui_colors[GCP_CUSTOM_LINE_COLORS] = {
+        QColor (249, 249,  249,  255), //Задний фон графика
+        QColor (170,  170,  170,  255), //Grid color
+        QColor (30, 30, 30, 255), //Цвет текста графика
+        QColor (245,  245,  245,  240)  //Цвет задника у легенды
+    };
 
     bool connected;
     bool plotting;
