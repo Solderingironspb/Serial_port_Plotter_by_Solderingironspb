@@ -1,12 +1,14 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include "serialthreaded.h"
 #include <QMainWindow>
 #include <QtSerialPort/QtSerialPort>
 #include <QSerialPortInfo>
 #include "about.h"
 #include "qcustomplot/qcustomplot.h"
 #include <QSettings>
+#include <QThread>
 
 #define START_MSG       '$'
 #define END_MSG         ';'
@@ -30,6 +32,13 @@ public:
     void write_settings();
     void read_settings();
 
+    QSerialPort *serial; //Подключим сериал
+    QThread *pMyThread;
+    serialthreaded *pSerial;
+
+public slots:
+    void update(QByteArray Data);
+
 private slots:
     void apply_setttings_OpenGL(bool arg1);
     void on_comboPort_currentIndexChanged(const QString &arg1);
@@ -39,7 +48,6 @@ private slots:
     void replot();
     void onNewDataArrived(QStringList newData);
     void saveStream(QStringList newData);
-    void readData();
     void on_spinYStep_valueChanged(int arg1);
     void on_savePNGButton_clicked();
     void onMouseMoveInPlot (QMouseEvent *event);
@@ -79,8 +87,6 @@ private slots:
     void on_action_use_OpenGL_triggered(bool checked);
 
 signals:
-    void portOpenFail();
-    void portOpenOK();
     void portClosed();
     void newData(QStringList data);
 
@@ -125,15 +131,13 @@ private:
     void closeCsvFile(void);
 
     QTimer updateTimer;
-    QSerialPort *serialPort;
     QString receivedData;
     int STATE;
     About *about;
-
     void createUI();
     void enable_com_controls (bool enable);
     void setupPlot();
-    void openPort(QSerialPortInfo portInfo, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits);
+    void openPort(int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits);
 };
 
 

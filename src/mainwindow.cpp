@@ -16,12 +16,12 @@ bool Debug_visible = false;
 
 MainWindow::MainWindow (QWidget *parent) :
     QMainWindow (parent),
+    pSerial (nullptr),
     ui (new Ui::MainWindow),
     connected (false),
     plotting (false),
     dataPointNumber (0),
     channels(0),
-    serialPort (nullptr),
     STATE (WAIT_START)
 {
     ui->setupUi (this);
@@ -37,8 +37,11 @@ MainWindow::MainWindow (QWidget *parent) :
 
 MainWindow::~MainWindow(){
     closeCsvFile();
-    if (serialPort != nullptr){
-        delete serialPort;
+
+    if (pSerial != nullptr){
+        pMyThread->exit();
+        delete pSerial;
+        delete pMyThread;
     }
     write_settings();//Перед закрытием окна сохраним настройки
     delete ui;
@@ -109,6 +112,8 @@ void MainWindow::read_settings(){
     on_automatic_cnt_channel_clicked(settings->value("Autoscan_channels", "true").toBool());
     /*Количество каналов*/
     ui->channel_count->setValue(settings->value("Count_channels", "1").toUInt());
+    ui->actionDisconnect->setEnabled(false);
+    ui->actionPause_Plot->setEnabled(false);
 
 
 }
@@ -244,25 +249,28 @@ void MainWindow::enable_com_controls (bool enable){
 }
 
 /*Открыть сессию работы с COM портом*/
-void MainWindow::openPort (QSerialPortInfo portInfo, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits){
-    serialPort = new QSerialPort(portInfo, nullptr);
+void MainWindow::openPort (int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits){
+    pSerial = new serialthreaded();
+    connect (pSerial, SIGNAL(portOpenOK()), this, SLOT(portOpenedSuccess()));
+    connect (pSerial, SIGNAL(portOpenFail()), this, SLOT(portOpenedFail()));
 
-    connect (this, SIGNAL(portOpenOK()), this, SLOT(portOpenedSuccess()));
-    connect (this, SIGNAL(portOpenFail()), this, SLOT(portOpenedFail()));
+    pSerial -> setPortName(ui->comboPort->currentText());
+    pSerial->setBaudRate(baudRate);
+    pSerial->setDataBits(dataBits);
+    pSerial->setParity(parity);
+    pSerial->setStopBits(stopBits);
+
+
+    pMyThread = new QThread;
+    pSerial->moveToThread(pMyThread);
+    connect(pSerial, SIGNAL(readyRead()), pSerial, SLOT(serialRecieve()));
+    connect(pSerial, SIGNAL(emitData(QByteArray)), this, SLOT(update(QByteArray)));
+    connect(pMyThread, SIGNAL(started()), pSerial, SLOT(open_port()));
+    pMyThread->start(QThread::InheritPriority);
+
     connect (this, SIGNAL(portClosed()), this, SLOT(onPortClosed()));
     connect (this, SIGNAL(newData(QStringList)), this, SLOT(onNewDataArrived(QStringList)));
-    connect (serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
     connect (this, SIGNAL(newData(QStringList)), this, SLOT(saveStream(QStringList)));
-
-    if (serialPort->open (QIODevice::ReadWrite)){
-        serialPort->setBaudRate (baudRate);
-        serialPort->setParity (parity);
-        serialPort->setDataBits (dataBits);
-        serialPort->setStopBits (stopBits);
-        emit portOpenOK();
-    }else{
-        emit portOpenedFail();
-    }
 }
 
 /*Закрыть сессию работы с COM портом*/
@@ -273,9 +281,9 @@ void MainWindow::onPortClosed(){
 
     closeCsvFile();
     
-    disconnect (serialPort, SIGNAL(readyRead()), this, SLOT(readData()));
-    disconnect (this, SIGNAL(portOpenOK()), this, SLOT(portOpenedSuccess()));
-    disconnect (this, SIGNAL(portOpenFail()), this, SLOT(portOpenedFail()));
+    disconnect (pSerial, SIGNAL(readyRead()), pSerial, SLOT(serialRecieve()));
+    disconnect (pSerial, SIGNAL(portOpenOK()), this, SLOT(portOpenedSuccess()));
+    disconnect (pSerial, SIGNAL(portOpenFail()), this, SLOT(portOpenedFail()));
     disconnect (this, SIGNAL(portClosed()), this, SLOT(onPortClosed()));
     disconnect (this, SIGNAL(newData(QStringList)), this, SLOT(onNewDataArrived(QStringList)));
     disconnect (this, SIGNAL(newData(QStringList)), this, SLOT(saveStream(QStringList)));
@@ -295,7 +303,6 @@ void MainWindow::portOpenedSuccess(){
     /*Скроем настройка COM порта*/
     ui->action_COM_port->setChecked(false);
     on_action_COM_port_triggered(false);
-    //setupPlot();
     ui->statusBar->showMessage ("Подключено!");
     enable_com_controls (false);
     
@@ -315,6 +322,7 @@ void MainWindow::portOpenedSuccess(){
 
 /*Если невозможно подключиться к COM порту*/
 void MainWindow::portOpenedFail(){
+    onPortClosed();
     ui->PortControlsBox->setVisible(true);
     ui->statusBar->showMessage ("Невозможно подключиться к COM порту!");
     ui->pushButton->setEnabled(true);
@@ -334,19 +342,10 @@ void MainWindow::replot(){
 
 
 /*Функция по составлению графика из полученных данных. Основа парсинга позаимствована у Borislav: https://github.com/CieNTi/serial_port_plotter*/
-/*Я нихрена не понял, чего он так замудрил, ну да ладно...C CH340 работает хорошо. С CDC от ST link v2.1 работает со сбоями*/
 void MainWindow::onNewDataArrived(QStringList newData){
     static int data_members = 0;
     static int channel = 0;
     static int i = 0;
-    volatile bool you_shall_NOT_PASS = false;
-
-    /* When a fast baud rate is set (921kbps was the first to starts to bug),
-       this method is called multiple times (2x in the 921k tests), so a flag
-       is used to throttle
-       TO-DO: Separate processes, buffer data (1) and process data (2) */
-    while (you_shall_NOT_PASS) {}
-    you_shall_NOT_PASS = true;
 
     if (plotting){
         /* Get size of received list */
@@ -379,56 +378,10 @@ void MainWindow::onNewDataArrived(QStringList newData){
                 ui->plot->graph(channel)->addData (dataPointNumber, newData[channel].toFloat());
                 /* Increment data number and channel */
                 channel++;
-
             }
-
             dataPointNumber++;
             channel = 0;
             ui->horizontalScrollBar->setMaximum(dataPointNumber);
-        }
-        you_shall_NOT_PASS = false;
-    }
-}
-
-
-/*Обработка приходящих данных*/
-/*Основа парсинга позаимствована у Borislav: https://github.com/CieNTi/serial_port_plotter*/
-void MainWindow::readData(){
-    if(serialPort->bytesAvailable()) {                                                    // If any bytes are available
-        QByteArray data = serialPort->readAll();                                          // Read all data in QByteArray
-        if(!data.isEmpty()) {                                                             // If the byte array is not empty
-            unsigned char *temp = (unsigned char*)data.data();                                                     // Get a '\0'-terminated char* to the data
-
-            for(int i = 0; temp[i] != '\0'; i++) {                                        // Iterate over the char*
-                switch(STATE) {                                                           // Switch the current state of the message
-                case WAIT_START:                                                          // If waiting for start [$], examine each char
-                    if(temp[i] == START_MSG) {                                            // If the char is $, change STATE to IN_MESSAGE
-                        STATE = IN_MESSAGE;
-                        receivedData.clear();                                             // Clear temporary QString that holds the message
-                        break;                                                            // Break out of the switch
-                    }
-                    break;
-                case IN_MESSAGE:                                                          // If state is IN_MESSAGE
-                    if(temp[i] == END_MSG) {                                              // If char examined is ;, switch state to END_MSG
-                        STATE = WAIT_START;
-                        QStringList incomingData = receivedData.split(' ');               // Split string received from port and put it into list
-                        if(filterDisplayedData){
-                            ui->textEdit_UartWindow->clear();
-                            for(int i = 0; i<incomingData.size(); i++){
-                                ui->textEdit_UartWindow->append("Канал данных "+ QString::number(i,10) + ": " + incomingData[i]);
-                            }
-                        }
-                        emit newData(incomingData);
-                        Data_count = incomingData.count();
-                        break;
-                    }else if (isdigit (temp[i]) || temp[i] == ' ' || temp[i] =='-' || temp[i] =='.'){
-                        /* If examined char is a digit, and not '$' or ';', append it to temporary string */
-                        receivedData.append(temp[i]);
-                    }
-                    break;
-                default: break;
-                }
-            }
         }
     }
 }
@@ -562,9 +515,9 @@ void MainWindow::on_actionConnect_triggered(){
             stopBits = QSerialPort::TwoStop;
         }
 
-        serialPort = new QSerialPort (portInfo, nullptr);
+        //pSerial = new serialthreaded();
 
-        openPort (portInfo, baudRate, dataBits, parity, stopBits);
+        openPort (baudRate, dataBits, parity, stopBits);
     }
 }
 
@@ -596,10 +549,12 @@ void MainWindow::on_actionRecord_stream_triggered(){
 /*Нажатие кнопки Отключиться*/
 void MainWindow::on_actionDisconnect_triggered(){
     if (connected){
-        serialPort->close();
+        pMyThread->exit();
+        pSerial->close();
         emit portClosed();
-        delete serialPort;
-        serialPort = nullptr;
+        delete pSerial;
+        delete pMyThread;
+        pSerial = nullptr;
         ui->statusBar->showMessage ("COM порт отключен!");
         connected = false;
         ui->actionConnect->setEnabled (true);
@@ -883,8 +838,6 @@ void MainWindow::on_action_Frameless_window_hint_triggered(bool checked){
     }
 }
 
-
-
 /*Использование аппаратного ускорения*/
 void MainWindow::on_action_use_OpenGL_triggered(bool checked){
     ui->plot->setOpenGl(checked, 3);
@@ -892,6 +845,48 @@ void MainWindow::on_action_use_OpenGL_triggered(bool checked){
         ui->statusBar->showMessage ("OpenGL включен");
     }else{
         ui->statusBar->showMessage ("OpenGL выключен");
+    }
+}
+
+/*Обработка приходящих данных*/
+/*Основа парсинга позаимствована у Borislav: https://github.com/CieNTi/serial_port_plotter*/
+void MainWindow::update(QByteArray Data){
+    //qDebug() << Data;
+    // If any bytes are available
+    QByteArray data = Data;                                          // Read all data in QByteArray
+    if(!data.isEmpty()) {                                                             // If the byte array is not empty
+        unsigned char *temp = (unsigned char*)data.data();                                                     // Get a '\0'-terminated char* to the data
+
+        for(int i = 0; temp[i] != '\0'; i++) {                                        // Iterate over the char*
+            switch(STATE) {                                                           // Switch the current state of the message
+            case WAIT_START:                                                          // If waiting for start [$], examine each char
+                if(temp[i] == START_MSG) {                                            // If the char is $, change STATE to IN_MESSAGE
+                    STATE = IN_MESSAGE;
+                    receivedData.clear();                                             // Clear temporary QString that holds the message
+                    break;                                                            // Break out of the switch
+                }
+                break;
+            case IN_MESSAGE:                                                          // If state is IN_MESSAGE
+                if(temp[i] == END_MSG) {                                              // If char examined is ;, switch state to END_MSG
+                    STATE = WAIT_START;
+                    QStringList incomingData = receivedData.split(' ');               // Split string received from port and put it into list
+                    if(filterDisplayedData){
+                        ui->textEdit_UartWindow->clear();
+                        for(int i = 0; i<incomingData.size(); i++){
+                            ui->textEdit_UartWindow->append("Канал данных "+ QString::number(i,10) + ": " + incomingData[i]);
+                        }
+                    }
+                    emit newData(incomingData);
+                    Data_count = incomingData.count();
+                    break;
+                }else if (isdigit (temp[i]) || temp[i] == ' ' || temp[i] =='-' || temp[i] =='.'){
+                    /* If examined char is a digit, and not '$' or ';', append it to temporary string */
+                    receivedData.append(temp[i]);
+                }
+                break;
+            default: break;
+            }
+        }
     }
 }
 
