@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Serial port Plotter 1.1 by Solderingironspb</string>
+   <string>Serial port Plotter 1.2 by Solderingironspb</string>
   </property>
   <property name="windowIcon">
    <iconset theme="://icons/Plotter.ico">
@@ -490,7 +490,7 @@ QGroupBox {
                 </size>
                </property>
                <property name="text">
-                <string>Точек по X</string>
+                <string>Секунд по X</string>
                </property>
               </widget>
              </item>
@@ -873,6 +873,8 @@ QGroupBox {
     <addaction name="actionDisconnect"/>
     <addaction name="actionRecord_stream"/>
     <addaction name="action_png"/>
+    <addaction name="openSnapshotAction"/>
+    <addaction name="saveSnapshotAction"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -1091,6 +1093,27 @@ QGroupBox {
    </property>
    <property name="text">
     <string>Аппаратное ускорение</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Сохранить слепок</string>
+   </property>
+  </action>
+  <action name="openSnapshotAction">
+   <property name="text">
+    <string>Открыть слепок графика</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+O</string>
+   </property>
+  </action>
+  <action name="saveSnapshotAction">
+   <property name="text">
+    <string>Сохранить слепок</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+S</string>
    </property>
   </action>
  </widget>

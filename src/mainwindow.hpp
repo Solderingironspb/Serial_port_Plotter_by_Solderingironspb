@@ -9,6 +9,9 @@
 #include "qcustomplot/qcustomplot.h"
 #include <QSettings>
 #include <QThread>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QDataStream>
 
 #define START_MSG       '$'
 #define END_MSG         ';'
@@ -25,7 +28,14 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+private:
+    qint64 startTime;
+    double lastTime;
+    QCPItemTracer *tracer;
+    QCPItemText *tracerLabel;
+    QCPItemLine *tracerLineX;
+    QCPItemLine *tracerLineY;
+    void updateTimeTicks();
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -40,6 +50,9 @@ public slots:
     void update(QByteArray Data);
 
 private slots:
+    void clearPlot();
+    void saveSnapshot(const QString &filePath);
+    void loadSnapshot(const QString &filePath);
     void apply_setttings_OpenGL(bool arg1);
     void on_comboPort_currentIndexChanged(const QString &arg1);
     void portOpenedSuccess();
@@ -85,6 +98,10 @@ private slots:
     void on_action_Frameless_window_hint_triggered(bool checked);
     void on_action_run_triggered(bool checked);
     void on_action_use_OpenGL_triggered(bool checked);
+
+    void on_openSnapshotAction_triggered();
+
+    void on_saveSnapshotAction_triggered();
 
 signals:
     void portClosed();
