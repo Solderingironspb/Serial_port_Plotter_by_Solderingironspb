@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>670</width>
-    <height>743</height>
+    <height>1038</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Serial port Plotter 1.2 by Solderingironspb</string>
+   <string>Serial port Plotter 2.0 by Solderingironspb</string>
   </property>
   <property name="windowIcon">
    <iconset theme="://icons/Plotter.ico">
@@ -33,83 +33,14 @@
       <property name="horizontalSpacing">
        <number>6</number>
       </property>
-      <item row="1" column="0">
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="styleSheet">
-         <string notr="true"> QGroupBox::title {
-     subcontrol-origin: margin;
-     subcontrol-position: top left; /* помещаем вверху по центру */
-     padding: 0px;
-     
- }
-QGroupBox {
-
-    border: 2px;
-    margin-top: 5ex; /* оставляем пространство вверху для заголовка */
-
-  
-   
-}</string>
-        </property>
-        <property name="title">
-         <string>Входящие данные</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <layout class="QFormLayout" name="formLayout_2">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Количество каналов</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="channel_count">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="automatic_cnt_channel">
-             <property name="text">
-              <string>Определять автоматически</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QGroupBox" name="gridGroupBox">
+      <item row="4" column="0" rowspan="2">
+       <widget class="QGroupBox" name="groupBox_3">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="styleSheet">
          <string notr="true"> QGroupBox::title {
      subcontrol-origin: margin;
@@ -127,53 +58,348 @@ QGroupBox {
 }</string>
         </property>
         <property name="title">
-         <string>Отладочная информация</string>
+         <string>Параметры точности</string>
         </property>
-        <layout class="QGridLayout" name="TextControlsBox">
-         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <property name="spacing">
-            <number>2</number>
+        <layout class="QFormLayout" name="formLayout_3">
+         <property name="verticalSpacing">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch2">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch1">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
            </property>
            <item>
-            <widget class="QPushButton" name="pushButton_TextEditHide">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">
-QPushButton{
-border: 1px solid #8b8b8b;
-border-radius: 2px;
-background-color: rgb(122,176, 207);
-}
-
- QPushButton:default {
-     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
- }
-
-QPushButton:pressed {
-border: 1px solid #8b8b8b;
-border-radius: 2px;
-background-color: rgb(35, 195, 193);
-}
-</string>
-             </property>
-             <property name="text">
-              <string>Скрыть информацию</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
+            <property name="text">
+             <string>0</string>
+            </property>
            </item>
-          </layout>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_precision_ch2">
+           <property name="text">
+            <string>Канал 2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_precision_ch1">
+           <property name="text">
+            <string>Канал 1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_precision_ch3">
+           <property name="text">
+            <string>Канал 3</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch3">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_precision_ch4">
+           <property name="text">
+            <string>Канал 4</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch4">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_precision_ch5">
+           <property name="text">
+            <string>Канал 5</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch5">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_precision_ch6">
+           <property name="text">
+            <string>Канал 6</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch6">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_precision_ch7">
+           <property name="text">
+            <string>Канал 7</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch7">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_precision_ch8">
+           <property name="text">
+            <string>Канал 8</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QComboBox" name="comboBox_precision_ch8">
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -229,6 +455,122 @@ QGroupBox {
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout_6">
+           <item row="4" column="2">
+            <widget class="QComboBox" name="comboData">
+             <property name="minimumSize">
+              <size>
+               <width>69</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QComboBox" name="comboBaud">
+             <property name="minimumSize">
+              <size>
+               <width>69</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2">
+            <widget class="QLabel" name="labelStop">
+             <property name="text">
+              <string>Stop bits:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QComboBox" name="comboParity">
+             <property name="minimumSize">
+              <size>
+               <width>69</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QComboBox" name="comboBox_Core_Protocol">
+             <item>
+              <property name="text">
+               <string>Embedded</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Овен TPM101</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QLabel" name="labelBaud">
+             <property name="text">
+              <string>Baudrate:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2">
+            <widget class="QComboBox" name="comboStop">
+             <property name="minimumSize">
+              <size>
+               <width>69</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>180</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="2">
+            <widget class="QLabel" name="labelParity">
+             <property name="text">
+              <string>Partity:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="labelPort">
+             <property name="text">
+              <string>Port:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="2">
+            <widget class="QLabel" name="labelData">
+             <property name="text">
+              <string>Data bits:</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0" colspan="3">
             <widget class="QPushButton" name="pushButton">
              <property name="minimumSize">
@@ -261,14 +603,7 @@ background-color: rgb(35, 195, 193);
              </property>
             </widget>
            </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QLabel" name="labelPort">
-             <property name="text">
-              <string>Port:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
+           <item row="2" column="2">
             <widget class="QComboBox" name="comboPort">
              <property name="minimumSize">
               <size>
@@ -284,98 +619,10 @@ background-color: rgb(35, 195, 193);
              </property>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QLabel" name="labelBaud">
+           <item row="1" column="0" colspan="2">
+            <widget class="QLabel" name="label_5">
              <property name="text">
-              <string>Baudrate:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QComboBox" name="comboBaud">
-             <property name="minimumSize">
-              <size>
-               <width>69</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>180</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QComboBox" name="comboData">
-             <property name="minimumSize">
-              <size>
-               <width>69</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>180</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="2">
-            <widget class="QLabel" name="labelData">
-             <property name="text">
-              <string>Data bits:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QComboBox" name="comboParity">
-             <property name="minimumSize">
-              <size>
-               <width>69</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>180</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="2">
-            <widget class="QLabel" name="labelParity">
-             <property name="text">
-              <string>Partity:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="2">
-            <widget class="QComboBox" name="comboStop">
-             <property name="minimumSize">
-              <size>
-               <width>69</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>180</width>
-               <height>16777215</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="2">
-            <widget class="QLabel" name="labelStop">
-             <property name="text">
-              <string>Stop bits:</string>
+              <string>Устройство:</string>
              </property>
             </widget>
            </item>
@@ -467,6 +714,9 @@ QGroupBox {
                  <height>16777215</height>
                 </size>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
                <property name="minimum">
                 <number>1</number>
                </property>
@@ -508,6 +758,9 @@ QGroupBox {
                  <height>16777215</height>
                 </size>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
                <property name="maximum">
                 <number>65535</number>
                </property>
@@ -519,17 +772,24 @@ QGroupBox {
                </property>
               </widget>
              </item>
-             <item row="2" column="0" colspan="2">
+             <item row="3" column="0" colspan="2">
               <widget class="QCheckBox" name="checkBox">
                <property name="text">
                 <string>Автомасштаб</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0" colspan="2">
+             <item row="4" column="0" colspan="2">
               <widget class="QCheckBox" name="checkBox_2">
                <property name="text">
                 <string>Бегущий график</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QCheckBox" name="checkBox_3">
+               <property name="text">
+                <string>Динамическое расширение по X</string>
                </property>
               </widget>
              </item>
@@ -734,7 +994,92 @@ background-color: rgb(35, 195, 193);
         </layout>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="styleSheet">
+         <string notr="true"> QGroupBox::title {
+     subcontrol-origin: margin;
+     subcontrol-position: top left; /* помещаем вверху по центру */
+     padding: 0px;
+     
+ }
+QGroupBox {
+
+    border: 2px;
+    margin-top: 5ex; /* оставляем пространство вверху для заголовка */
+
+  
+   
+}</string>
+        </property>
+        <property name="title">
+         <string>Настройки опроса</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QFormLayout" name="formLayout_2">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Количество каналов</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QSpinBox" name="channel_count">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="maximum">
+                <number>8</number>
+               </property>
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Частота опроса (мс)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinBox_2">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="maximum">
+                <number>65535</number>
+               </property>
+               <property name="value">
+                <number>1000</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -810,6 +1155,30 @@ QGroupBox {
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Приходящие данные:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_system_message">
+        <property name="text">
+         <string>Системные сообщения:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTextEdit" name="textEdit_UartWindow">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -871,10 +1240,10 @@ QGroupBox {
     <addaction name="actionConnect"/>
     <addaction name="actionPause_Plot"/>
     <addaction name="actionDisconnect"/>
+    <addaction name="openSnapshotAction"/>
     <addaction name="actionRecord_stream"/>
     <addaction name="action_png"/>
-    <addaction name="openSnapshotAction"/>
-    <addaction name="saveSnapshotAction"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -899,6 +1268,7 @@ QGroupBox {
     <addaction name="action_COM_port"/>
     <addaction name="action_input_data"/>
     <addaction name="action_graph_settings"/>
+    <addaction name="action_precision"/>
     <addaction name="action_debug_info"/>
     <addaction name="action"/>
     <addaction name="action_hide_debug_info"/>
@@ -912,7 +1282,7 @@ QGroupBox {
   </widget>
   <action name="actionConnect">
    <property name="text">
-    <string>Подключиться</string>
+    <string>Начать запись</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -928,7 +1298,7 @@ QGroupBox {
   </action>
   <action name="actionDisconnect">
    <property name="text">
-    <string>Отключиться</string>
+    <string>Закончить запись</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -943,11 +1313,8 @@ QGroupBox {
    </property>
   </action>
   <action name="actionRecord_stream">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
-    <string>Сохранять данные в *.csv</string>
+    <string>Преобразовать запись *.dat в *.csv</string>
    </property>
    <property name="toolTip">
     <string>Только при отключенном COM порту</string>
@@ -1010,7 +1377,7 @@ QGroupBox {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Отладочная информация</string>
+    <string>Системные сообщения</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+4</string>
@@ -1094,6 +1461,9 @@ QGroupBox {
    <property name="text">
     <string>Аппаратное ускорение</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="action_2">
    <property name="text">
@@ -1102,18 +1472,37 @@ QGroupBox {
   </action>
   <action name="openSnapshotAction">
    <property name="text">
-    <string>Открыть слепок графика</string>
+    <string>Режим просмотра</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+K, Ctrl+O</string>
    </property>
   </action>
-  <action name="saveSnapshotAction">
+  <action name="action_precision">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Сохранить слепок</string>
+    <string>Параметры точности</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+K, Ctrl+S</string>
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="Theme_White">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Светлая</string>
+   </property>
+  </action>
+  <action name="Theme_Dark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Темная</string>
    </property>
   </action>
  </widget>
