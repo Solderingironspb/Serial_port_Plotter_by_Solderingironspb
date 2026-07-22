@@ -25,7 +25,7 @@
 <img width="1439" height="936" alt="Безымянный" src="https://github.com/user-attachments/assets/a144479a-d3ee-4a97-9642-cb6f624604f3" />
 
 ### [Скачать последнюю версию программы (win_x64)](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/releases/download/v2.0/Serial_port_Plotter.zip)
-
+### [Примеры для микроконтроллеров](https://github.com/Solderingironspb/examples_embedded_for_Serial_port_Plotter_by_Solderingironspb)
 
 
  
