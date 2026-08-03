@@ -5,10 +5,10 @@ CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-VERSION = 1.1.0.0
+VERSION = 2.0.0.0
 QMAKE_TARGET_COMPANY = Solderingironspb
 QMAKE_TARGET_PRODUCT = Serial port Plotter
-QMAKE_TARGET_DESCRIPTION = Application for Debug
+QMAKE_TARGET_DESCRIPTION = Serial port Plotter
 QMAKE_TARGET_COPYRIGHT = Oleg Volkov
 
 TARGET = Serial_port_Plotter

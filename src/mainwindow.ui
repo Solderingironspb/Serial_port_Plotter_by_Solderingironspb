@@ -1271,7 +1271,6 @@ QGroupBox {
     <addaction name="action_precision"/>
     <addaction name="action_debug_info"/>
     <addaction name="action"/>
-    <addaction name="action_hide_debug_info"/>
     <addaction name="action_windows_stays_on_top"/>
     <addaction name="action_Frameless_window_hint"/>
    </widget>
