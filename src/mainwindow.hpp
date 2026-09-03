@@ -121,6 +121,7 @@ public:
     serialthreaded *pSerial;
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 public slots:
     void clearPlot();

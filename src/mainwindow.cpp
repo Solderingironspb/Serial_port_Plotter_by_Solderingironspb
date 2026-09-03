@@ -2724,6 +2724,26 @@ void MainWindow::updateFileHeader() {
     qDebug() << "Заголовок (1024 байт) успешно обновлен";
 }
 
+//Подтверждение на закрытие приложения (чтоб случайно не закрыть)
+void MainWindow::closeEvent(QCloseEvent *event) {
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Подтверждение закрытия");
+    msgBox.setText("Вы точно хотите закрыть приложение?");
+    msgBox.setIcon(QMessageBox::Question);
+
+    QPushButton *closeButton = msgBox.addButton("Закрыть", QMessageBox::AcceptRole);
+    QPushButton *cancelButton = msgBox.addButton("Отмена", QMessageBox::RejectRole);
+    msgBox.setDefaultButton(cancelButton);  // Кнопка "Отмена" по умолчанию
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == closeButton) {
+        event->accept();  // Закрываем приложение
+    } else {
+        event->ignore();  // Остаемся
+    }
+}
+
 //Светлая тема
 void MainWindow::on_Theme_White_triggered(){
     ui->Theme_White->setChecked(true);
