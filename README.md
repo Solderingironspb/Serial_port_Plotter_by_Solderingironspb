@@ -31,5 +31,10 @@
 ### [🔗Скачать последнюю версию программы (win_x64)](https://github.com/Solderingironspb/Serial_port_Plotter_by_Solderingironspb/releases/download/v2.0/Serial_port_Plotter.zip)
 ### [🔗Примеры создания ModbusRTU slave-устройств под ядро Core_Embedded_ModbusRTU](https://github.com/Solderingironspb/examples_embedded_for_Serial_port_Plotter_by_Solderingironspb)
 
+###
+<img width="1920" height="1080" alt="VSC" src="https://github.com/user-attachments/assets/2578bae0-f27e-4a35-8bef-d9d4cb5fdeaa" />
+
+
+### Видео: [Serial port Plotter 2.0 by Solderingironspb](https://youtu.be/CIIV5sWd0XY?si=MLNf63-sR_LaPZDv)
 
  
